@@ -220,8 +220,10 @@ class Main:
         for photon in self.photons:
             photon.show(self.window)
         pygame.draw.line(
-            self.window.screen, (0,) * 3, (0, self.window.height / 2),
-            (self.window.width, self.self.window.height / 2)
+            self.window.screen,
+            0xff00ff,
+            (0, self.window.height / 2),
+            (self.window.width, self.window.height / 2),
         )
         pygame.display.flip()
 
