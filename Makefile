@@ -3,5 +3,7 @@ shell:
 install:
 	pip install pipenv
 	pipenv install
-run:
+photoelectric:
 	python photoelectric.py
+compton:
+	python mainCompton.py
