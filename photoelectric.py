@@ -6,8 +6,6 @@ import itertools
 
 from rich import print
 
-PRECISION = 3
-
 
 class Window:
     """Window."""
@@ -101,7 +99,6 @@ class Photon(Particle):
 
     def show(self, window: Window):
         """Show the photon."""
-        print(self)
         x, y = window.convert(self.x, self.y)
         pygame.draw.circle(
             window.screen, self.color, (x, y), self.radius * window.length
@@ -134,7 +131,6 @@ class Electron(Particle):
 
     def show(self, window: Window):
         """Show the electron."""
-        print(self)
         x, y = window.convert(self.x, self.y)
         pygame.draw.circle(
             window.screen, self.color, (x, y), self.radius * window.length
