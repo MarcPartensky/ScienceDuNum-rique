@@ -1,13 +1,15 @@
+#!/usr/bin/env python
+"""Simulation of the compton effect."""
 import random, pygame,math,os
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-State=-1
-Phi=math.pi/4
-Psi=-math.pi/4
+State = -1
+Phi = math.pi/4
+Psi = -math.pi/4
 
-def load_png(name:str):
+def load_png(name: str):
     """Charge une image et retourne un objet image"""
     fullname = name #os.path.join('data', name)
     image = pygame.image.load(fullname)
@@ -19,7 +21,7 @@ def load_png(name:str):
 
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, img_path, x, color=0x700090, radius=30, velocity=(5,)*2):
+    def __init__(self, img_path, x, color=0x700090, radius=30, velocity=(5,) * 2):
         super().__init__()
         self.x = x
         self.screen = pygame.display.get_surface()
@@ -34,10 +36,12 @@ class Ball(pygame.sprite.Sprite):
 
 class Electron(Ball):
     def __init__(self, x, color=0x700090, radius=30,velocity=(5,)*2):
-        super().__init__("img/electron.png", x, color=color, radius=radius, velocity=velocity)
+        super().__init__(
+            "img/electron.png", x, color=color, radius=radius, velocity=velocity
+        )
         self.state=0
     def update(self, *args, **kwargs) -> None:
-        global State #todo
+        global State  # todo
         self.rect.x = ((self.screen.get_width() - self.radius) / 2) + self.velocity[0] * math.cos(Psi) * max(State,0)
         self.rect.y = ((self.screen.get_height() - self.radius) / 2) - self.velocity[1] * math.sin(Psi) * max(State,0)
 
@@ -129,5 +133,6 @@ class Main():
                     game_exit = True
 
 
-a=Main()
-a()
+if __name__ == "__main__":
+    a = Main()
+    a()

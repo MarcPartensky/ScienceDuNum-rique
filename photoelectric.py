@@ -150,9 +150,9 @@ class Main:
         pygame.display.set_caption("Effet Compton")
         screen = pygame.display.set_mode(flags=pygame.RESIZABLE)
         self.window = Window(screen)
+        self.clock = pygame.time.Clock()
         self.background_color = 0x000000
         self.dt = 0.1
-        self.clock = pygame.time.Clock()
         self.fps = 60
         self.photons = (Photon(-0.5, 0, 0.005),)
         self.electrons = (Electron(0, 0),)
@@ -220,8 +220,10 @@ class Main:
         for photon in self.photons:
             photon.show(self.window)
         pygame.draw.line(
-            self.window.screen, (0,) * 3, (0, self.window.height / 2),
-            (self.window.width, self.self.window.height / 2)
+            self.window.screen,
+            0xff00ff,
+            (0, self.window.height / 2),
+            (self.window.width, self.window.height / 2),
         )
         pygame.display.flip()
 
