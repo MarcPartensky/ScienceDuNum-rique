@@ -150,9 +150,9 @@ class Main:
         pygame.display.set_caption("Effet Compton")
         screen = pygame.display.set_mode(flags=pygame.RESIZABLE)
         self.window = Window(screen)
+        self.clock = pygame.time.Clock()
         self.background_color = 0x000000
         self.dt = 0.1
-        self.clock = pygame.time.Clock()
         self.fps = 60
         self.photons = (Photon(-0.5, 0, 0.005),)
         self.electrons = (Electron(0, 0),)
