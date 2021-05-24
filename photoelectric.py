@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-
 """Simulation of the photoelectric effect."""
 
 import pygame
 import random
+
+from print import print
 
 
 class Photon:
@@ -40,11 +41,13 @@ class Main:
     def __init__(self):
         """Initializing the simulation."""
         pygame.init()
-        self.screen = pygame.display.set_mode(flags=pygame.RESIZABLE)
         pygame.display.set_caption("Effet Compton")
+        self.screen = pygame.display.set_mode(flags=pygame.RESIZABLE)
         self.photon = Photon(self.w / 2, self.h / 2)
         self.background_color = 0x000000
         self.dt = 0.1
+        self.clock = pygame.time.Clock()
+        self.fps = 60
 
     @property
     def w(self):
@@ -73,6 +76,7 @@ class Main:
 
             self.update()
             self.show()
+            self.clock.tick(self.fps)
 
     def update(self):
         """Update the simulation."""

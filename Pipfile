@@ -10,6 +10,7 @@ pygame = "*"
 pylint = "*"
 black = "*"
 jedi = "*"
+rich = "*"
 
 [requires]
 python_version = "3.9"
