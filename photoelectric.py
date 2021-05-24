@@ -18,12 +18,10 @@ class Window:
 
     def convert(self, x: float, y: float):
         """Convert in the new coordinates system."""
-        # length = self.length
         return ((x + 1 / 2) * self.width, (-y + 1 / 2) * self.height)
 
     def unconvert(self, x: float, y: float):
         """Convert in the new coordinates system."""
-        # length = self.length
         return (x / self.width - 1 / 2, -y / self.height - 1 / 2)
 
     @property
@@ -144,6 +142,8 @@ class Electron(Particle):
 
 
 class Main:
+    """Main class."""
+
     def __init__(self):
         """Initializing the simulation."""
         pygame.init()
@@ -199,7 +199,6 @@ class Main:
         if (electron.position - photon.position).magnitude() < (
             electron.radius + photon.radius
         ):
-            print("colliding")
             p1, p2 = photon.position, electron.position
             v1, v2 = photon.velocity, electron.velocity
             n = (v2 - v1).magnitude()
