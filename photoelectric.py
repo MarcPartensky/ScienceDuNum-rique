@@ -2,6 +2,7 @@
 """Simulation of the photoelectric effect."""
 
 import pygame
+import itertools
 
 from rich import print
 
@@ -17,13 +18,13 @@ class Window:
 
     def convert(self, x: float, y: float):
         """Convert in the new coordinates system."""
-        length = self.length
-        return ((x + 1 / 2) * length, (-y + 1 / 2) * length)
+        # length = self.length
+        return ((x + 1 / 2) * self.width, (-y + 1 / 2) * self.height)
 
     def unconvert(self, x: float, y: float):
         """Convert in the new coordinates system."""
-        length = self.length
-        return (x / length - 1 / 2, -y / length - 1 / 2)
+        # length = self.length
+        return (x / self.width - 1 / 2, -y / self.height - 1 / 2)
 
     @property
     def length(self):
@@ -97,7 +98,7 @@ class Electron(Particle):
         y: float,
         vx: int = 0,
         vy: int = 0,
-        color: int = 0xFFFF00,
+        color: int = 0xFF9010,
         radius: int = 0.01,
     ):
         """Create a electron."""
@@ -134,13 +135,8 @@ class Main:
         self.dt = 0.1
         self.clock = pygame.time.Clock()
         self.fps = 60
-        print(self.window.screen.get_size())
-        self.load()
-
-    def load(self):
-        """Load objects."""
-        self.photon = Photon(-0.5, 0, 0.005)
-        self.electron = Electron(0, 0)
+        self.photons = (Photon(-0.5, 0, 0.005),)
+        self.electrons = (Electron(0, 0),)
 
     def __call__(self, *args, **kwargs):
         """Main loop."""
@@ -151,27 +147,48 @@ class Main:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     raise SystemExit
-                # elif event.type == pygame.VIDEORESIZE:
+                elif event.type == pygame.VIDEORESIZE:
+                    self.window.screen = pygame.display.set_mode(
+                        event.size, flags=pygame.RESIZABLE
+                    )
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
                         pygame.quit()
                         raise SystemExit
+                    elif event.key == pygame.K_o:
+                        self.dt *= 2
+                    elif event.key == pygame.K_p:
+                        self.dt /= 2
 
             self.update()
             self.show()
             self.clock.tick(self.fps)
 
+    def collide(self):
+        """Deal with particle collisions."""
+        for (electron, photon) in itertools.combination:
+            pass
+
+
     def update(self):
         """Update the simulation."""
-        self.photon.update(self.dt)
+        for electron in self.electrons:
+            electron.update(self.dt)
+        for photon in self.photons:
+            photon.update(self.dt)
 
     def show(self):
         """Show the simulation."""
         self.window.screen.fill(self.background_color)
-        self.photon.show(self.window)
+        for electron in self.electrons:
+            electron.show(self.window)
+        for photon in self.photons:
+            photon.show(self.window)
         pygame.display.flip()
 
 
 if __name__ == "__main__":
+    # import sys
+    # sys.argv
     m = Main()
     m()
