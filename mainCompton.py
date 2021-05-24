@@ -3,9 +3,9 @@ import random, pygame,math,os
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-State=0
+State=-1
 Phi=math.pi/4
-Psi=math.pi/4
+Psi=-math.pi/4
 
 def load_png(name:str):
     """Charge une image et retourne un objet image"""
@@ -37,15 +37,11 @@ class Electron(Ball):
         super().__init__("img/electron.png", x, color=color, radius=radius, velocity=velocity)
         self.state=0
     def update(self, *args, **kwargs) -> None:
-        global State#todo
-        if State == 0:
-            self.rect.x=(self.screen.get_width() - self.radius) / 2
-            self.rect.y=(self.screen.get_height() - self.radius) / 2
-        else:
-            self.rect.x += self.velocity[0] * math.cos(Psi)
-            self.rect.y += self.velocity[1] * math.sin(Psi)
+        global State #todo
+        self.rect.x = ((self.screen.get_width() - self.radius) / 2) + self.velocity[0] * math.cos(Psi) * max(State,0)
+        self.rect.y = ((self.screen.get_height() - self.radius) / 2) - self.velocity[1] * math.sin(Psi) * max(State,0)
 
-        #self.rect = self.rect.move((self.x, self.y))
+
 
 
 class Photon (Ball):
@@ -55,17 +51,22 @@ class Photon (Ball):
     def update(self, *args, **kwargs) -> None:
         global State
 
-        if self.rect.x + self.radius/2 > self.screen.get_width()/2:
-            State = 1
-            self.rect.x += self.velocity[0] * math.cos(Phi)
-            self.rect.y -= self.velocity[1] * math.sin(Phi)
-        else:
+        if self.rect.x + self.radius / 2 > self.screen.get_width() / 2 and State<0:
             State = 0
-            self.rect.x += self.velocity[0]
-
-        if self.rect.x + self.radius > self.screen.get_width():
+        elif self.rect.x +self.radius/2 > self.screen.get_width():
+            State = -1
             self.rect.x = 0
             self.rect.y = (self.screen.get_height() - self.radius) / 2
+
+        if State < 0:
+            self.rect.x += self.velocity[0]
+        else:
+            self.rect.x = ((self.screen.get_width() - self.radius) / 2) + self.velocity[0] * math.cos(Phi) * State
+            self.rect.y = ((self.screen.get_height() - self.radius) / 2) - self.velocity[1] * math.sin(Phi) * State
+            State += 1
+
+
+
 
 class Main():
 
@@ -97,6 +98,17 @@ class Main():
         pygame.draw.line(self.background, (0,)*3, (0, self.h/2), (self.w, self.h/2))
         self.screen.blit(self.background, (0, 0))
 
+    def draw_lines(self):
+        lengthPhi = self.h/(2*math.sin(Phi))
+        endPosPhi=(lengthPhi*math.cos(Phi)+self.w/2,0)
+        pygame.draw.line(self.screen, (0,)*3, (self.w/2, self.h/2), endPosPhi)
+
+        lengthPsi = self.h / (2 * math.sin(Psi))
+        end_posPsi = (lengthPhi*math.cos(Psi)+self.w/2,self.h)
+        pygame.draw.line(self.screen, (0,)*3, (self.w/2, self.h/2), end_posPsi)
+
+
+
     def __call__(self, *args, **kwargs):
         game_exit = False
         clock = pygame.time.Clock()
@@ -104,6 +116,7 @@ class Main():
             clock.tick(60)
             #self.screen.blit(self.background, self.electron)
             self.make_background()
+            self.draw_lines()
             self.all_sprites_list.draw(self.screen)
             self.all_sprites_list.update()
 
