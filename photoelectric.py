@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """Simulation of the photoelectric effect."""
 
+import os
+
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 import pygame
 import itertools
 import argparse
 
 from rich import print
-
-PLANK_CONSTANT = 6.62607015e-34
-print(PLANK_CONSTANT)
 
 
 class Window:
@@ -44,6 +44,7 @@ class Window:
 
 class Particle:
     """Particle"""
+
     id = 0
 
     def __init__(
@@ -87,7 +88,9 @@ class Particle:
 
 class Photon(Particle):
     """Photon."""
+
     id = 0
+    plank_constant = 0
 
     def __init__(
         self,
@@ -108,7 +111,7 @@ class Photon(Particle):
     def update(self, dt: float):
         """Update the photon."""
         self.position += self.velocity * dt
-        self.energy = self.velocity.magnitude() * PLANK_CONSTANT
+        self.energy = self.velocity.magnitude() * Photon.plank_constant
 
     def show(self, window: Window):
         """Show the photon."""
@@ -120,6 +123,7 @@ class Photon(Particle):
 
 class Electron(Particle):
     """Electron."""
+
     id = 0
 
     def __init__(
@@ -153,17 +157,19 @@ class Electron(Particle):
 class Main:
     """Main class."""
 
-    def __init__(self, electron_energy: float = 0.5):
+    def __init__(self, config: argparse.Namespace):
         """Initializing the simulation."""
         pygame.init()
         pygame.display.set_caption("Effet Compton")
         screen = pygame.display.set_mode(flags=pygame.RESIZABLE)
         self.window = Window(screen)
         self.clock = pygame.time.Clock()
-        self.background_color = 0x000000
-        self.dt = 0.1
-        self.fps = 60
-        self.electron_energy = electron_energy
+        self.background_color = config.background_color
+        self.line_color = config.line_color
+        self.dt = config.dt
+        self.fps = config.fps
+        self.electron_energy = config.electron_energy
+        Photon.plank_constant = config.plank_constant
         self.start()
 
     def start(self):
@@ -232,7 +238,7 @@ class Main:
         self.window.screen.fill(self.background_color)
         pygame.draw.line(
             self.window.screen,
-            0xFF00FF,
+            self.line_color,
             (0, self.window.height / 2),
             (self.window.width, self.window.height / 2),
         )
@@ -246,17 +252,21 @@ class Main:
 def get_parser():
     """Parser that parses terminal arguments."""
     import yaml
-    parser = argparse.ArgumentParser()
+
+    parser = argparse.ArgumentParser(description="test")
     with open("config.yml", "r") as stream:
-        yaml.draw
-    for 
+        content = yaml.safe_load(stream)
+
+    for key, value in content.items():
+        parser.add_argument("--" + key, default=value, required=False, nargs="?")
 
     return parser
 
 
 if __name__ == "__main__":
     import sys
+
     parser = get_parser()
-    parser.parse_args(sys.argv)
-    m = Main()
+    config = parser.parse_args(sys.argv[1::])
+    m = Main(config)
     m()
