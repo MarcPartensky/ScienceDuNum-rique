@@ -45,8 +45,8 @@ class Particle:
         self,
         x: float,
         y: float,
-        vx: int = 0,
-        vy: int = 0,
+        vx: float = 0,
+        vy: float = 0,
     ):
         """Create a photon."""
         self.position: pygame.Vector = pygame.Vector2(x, y)
@@ -82,8 +82,8 @@ class Photon(Particle):
         self,
         x: float,
         y: float,
-        vx: int = 0,
-        vy: int = 0,
+        vx: float = 0,
+        vy: float = 0,
         color: int = 0xFFFF77,
         radius: int = 0.01,
     ):
