@@ -45,9 +45,36 @@ class Window:
 class Particle:
     """Particle"""
 
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        vx: int = 0,
+        vy: int = 0,
+    ):
+        """Create a photon."""
+        self.position: pygame.Vector = pygame.Vector2(x, y)
+        self.velocity: pygame.Vector = pygame.Vector2(vx, vy)
+
     def __str__(self):
         """Return the string representation of the particle."""
         return f"{type(self).__name__}{type(self).id}(x={round(self.x, 3)},y={round(self.y, 3)})"
+
+    @property
+    def x(self):
+        return self.position.x
+
+    @property
+    def y(self):
+        return self.position.y
+
+    @property
+    def vx(self):
+        return self.velocity.x
+
+    @property
+    def vy(self):
+        return self.velocity.y
 
 
 class Photon(Particle):
@@ -65,18 +92,14 @@ class Photon(Particle):
         radius: int = 0.01,
     ):
         """Create a photon."""
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
+        super().__init__(x, y, vx, vy)
         self.color = color
         self.radius = radius
         Photon.id += 1
 
     def update(self, dt: float):
         """Update the photon."""
-        self.x += self.vx * dt
-        self.y += self.vy * dt
+        self.position += self.velocity * dt
 
     def show(self, window: Window):
         """Show the photon."""
@@ -102,18 +125,14 @@ class Electron(Particle):
         radius: int = 0.01,
     ):
         """Create a electron."""
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
+        super().__init__(x, y, vx, vy)
         self.color = color
         self.radius = radius
         Electron.id += 1
 
     def update(self, dt: float):
         """Update the electron."""
-        self.x += self.vx * dt
-        self.y += self.vy * dt
+        self.position += self.velocity * dt
 
     def show(self, window: Window):
         """Show the electron."""
@@ -166,9 +185,9 @@ class Main:
 
     def collide(self):
         """Deal with particle collisions."""
-        for (electron, photon) in itertools.combination:
-            pass
-
+        for electron in self.electrons:
+            for photon in self.photons:
+                photon
 
     def update(self):
         """Update the simulation."""
