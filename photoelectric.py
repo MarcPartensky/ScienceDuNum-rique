@@ -7,6 +7,10 @@ import itertools
 from rich import print
 
 
+PLANK_CONSTANT = 6.62607015e-34
+print(PLANK_CONSTANT)
+
+
 class Window:
     """Window."""
 
@@ -85,7 +89,7 @@ class Photon(Particle):
         vx: float = 0,
         vy: float = 0,
         color: int = 0xFFFF77,
-        radius: int = 0.01,
+        radius: float = 0.01,
     ):
         """Create a photon."""
         super().__init__(x, y, vx, vy)
@@ -117,7 +121,7 @@ class Electron(Particle):
         vx: int = 0,
         vy: int = 0,
         color: int = 0xFF9010,
-        radius: int = 0.01,
+        radius: float = 0.01,
     ):
         """Create a electron."""
         super().__init__(x, y, vx, vy)
@@ -210,16 +214,16 @@ class Main:
     def show(self):
         """Show the simulation."""
         self.window.screen.fill(self.background_color)
-        for electron in self.electrons:
-            electron.show(self.window)
-        for photon in self.photons:
-            photon.show(self.window)
         pygame.draw.line(
             self.window.screen,
             0xff00ff,
             (0, self.window.height / 2),
             (self.window.width, self.window.height / 2),
         )
+        for electron in self.electrons:
+            electron.show(self.window)
+        for photon in self.photons:
+            photon.show(self.window)
         pygame.display.flip()
 
 
