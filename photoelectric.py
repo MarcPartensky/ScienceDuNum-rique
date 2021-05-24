@@ -156,6 +156,7 @@ class Main:
         self.fps = 60
         self.photons = (Photon(-0.5, 0, 0.005),)
         self.electrons = (Electron(0, 0),)
+        self.pause = False
 
     def __call__(self, *args, **kwargs):
         """Main loop."""
@@ -178,16 +179,26 @@ class Main:
                         self.dt *= 2
                     elif event.key == pygame.K_p:
                         self.dt /= 2
+                    elif event.key == pygame.K_SPACE:
+                        self.pause = not self.pause
 
-            self.update()
-            self.show()
+            if not self.pause:
+                self.update()
+                self.show()
             self.clock.tick(self.fps)
 
     def collide(self):
         """Deal with particle collisions."""
         for electron in self.electrons:
             for photon in self.photons:
-                photon
+                self.collide_electron_photon(electron, photon)
+
+    def collide_electron_photon(self, electron: Electron, photon: Photon):
+        """Deal with the collision with an electron and a photon."""
+        p1, p2 = photon.position, electron.position
+        v1, v2 = photon.velocity, electron.velocity
+        n = (v2 - v1).magnitude()
+        photon.velocity
 
     def update(self):
         """Update the simulation."""
