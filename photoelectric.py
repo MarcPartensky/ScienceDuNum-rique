@@ -3,9 +3,9 @@
 
 import pygame
 import itertools
+import argparse
 
 from rich import print
-
 
 PLANK_CONSTANT = 6.62607015e-34
 print(PLANK_CONSTANT)
@@ -44,6 +44,7 @@ class Window:
 
 class Particle:
     """Particle"""
+    id = 0
 
     def __init__(
         self,
@@ -51,14 +52,21 @@ class Particle:
         y: float,
         vx: float = 0,
         vy: float = 0,
+        energy: float = 0,
     ):
         """Create a photon."""
         self.position: pygame.Vector = pygame.Vector2(x, y)
         self.velocity: pygame.Vector = pygame.Vector2(vx, vy)
+        self.energy: float = energy
 
     def __str__(self):
         """Return the string representation of the particle."""
-        return f"{type(self).__name__}{type(self).id}(x={round(self.x, 3)},y={round(self.y, 3)})"
+        id = type(self).id
+        name = type(self).__name__
+        rx = round(self.x, 3)
+        ry = round(self.y, 3)
+        re = round(self.energy, 3)
+        return f"{name}{n}(x={rx},y={ry},e={re})"
 
     @property
     def x(self):
@@ -79,7 +87,6 @@ class Particle:
 
 class Photon(Particle):
     """Photon."""
-
     id = 0
 
     def __init__(
@@ -88,11 +95,12 @@ class Photon(Particle):
         y: float,
         vx: float = 0,
         vy: float = 0,
+        energy: float = 0,
         color: int = 0xFFFF77,
         radius: float = 0.01,
     ):
         """Create a photon."""
-        super().__init__(x, y, vx, vy)
+        super().__init__(x, y, vx, vy, energy)
         self.color = color
         self.radius = radius
         Photon.id += 1
@@ -100,6 +108,7 @@ class Photon(Particle):
     def update(self, dt: float):
         """Update the photon."""
         self.position += self.velocity * dt
+        self.energy = self.velocity.magnitude() * PLANK_CONSTANT
 
     def show(self, window: Window):
         """Show the photon."""
@@ -111,7 +120,6 @@ class Photon(Particle):
 
 class Electron(Particle):
     """Electron."""
-
     id = 0
 
     def __init__(
@@ -120,11 +128,12 @@ class Electron(Particle):
         y: float,
         vx: int = 0,
         vy: int = 0,
+        energy: float = 0.5,
         color: int = 0xFF9010,
         radius: float = 0.01,
     ):
         """Create a electron."""
-        super().__init__(x, y, vx, vy)
+        super().__init__(x, y, vx, vy, energy)
         self.color = color
         self.radius = radius
         Electron.id += 1
@@ -144,7 +153,7 @@ class Electron(Particle):
 class Main:
     """Main class."""
 
-    def __init__(self):
+    def __init__(self, electron_energy: float = 0.5):
         """Initializing the simulation."""
         pygame.init()
         pygame.display.set_caption("Effet Compton")
@@ -154,8 +163,13 @@ class Main:
         self.background_color = 0x000000
         self.dt = 0.1
         self.fps = 60
+        self.electron_energy = electron_energy
+        self.start()
+
+    def start(self):
+        """Start the simulation."""
         self.photons = (Photon(-0.5, 0, 0.005),)
-        self.electrons = (Electron(0, 0),)
+        self.electrons = (Electron(0, 0, energy=self.electron_energy),)
         self.pause = False
 
     def __call__(self, *args, **kwargs):
@@ -181,6 +195,8 @@ class Main:
                         self.dt /= 2
                     elif event.key == pygame.K_SPACE:
                         self.pause = not self.pause
+                    elif event.key == pygame.K_r:
+                        self.start()
 
             if not self.pause:
                 self.update()
@@ -216,7 +232,7 @@ class Main:
         self.window.screen.fill(self.background_color)
         pygame.draw.line(
             self.window.screen,
-            0xff00ff,
+            0xFF00FF,
             (0, self.window.height / 2),
             (self.window.width, self.window.height / 2),
         )
@@ -227,8 +243,20 @@ class Main:
         pygame.display.flip()
 
 
+def get_parser():
+    """Parser that parses terminal arguments."""
+    import yaml
+    parser = argparse.ArgumentParser()
+    with open("config.yml", "r") as stream:
+        yaml.draw
+    for 
+
+    return parser
+
+
 if __name__ == "__main__":
-    # import sys
-    # sys.argv
+    import sys
+    parser = get_parser()
+    parser.parse_args(sys.argv)
     m = Main()
     m()
