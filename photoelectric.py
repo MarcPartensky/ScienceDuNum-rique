@@ -184,6 +184,7 @@ class Main:
 
             if not self.pause:
                 self.update()
+                self.collide()
                 self.show()
             self.clock.tick(self.fps)
 
@@ -195,10 +196,14 @@ class Main:
 
     def collide_electron_photon(self, electron: Electron, photon: Photon):
         """Deal with the collision with an electron and a photon."""
-        p1, p2 = photon.position, electron.position
-        v1, v2 = photon.velocity, electron.velocity
-        n = (v2 - v1).magnitude()
-        photon.velocity
+        if (electron.position - photon.position).magnitude() < (
+            electron.radius + photon.radius
+        ):
+            print("colliding")
+            p1, p2 = photon.position, electron.position
+            v1, v2 = photon.velocity, electron.velocity
+            n = (v2 - v1).magnitude()
+            photon.velocity
 
     def update(self):
         """Update the simulation."""
