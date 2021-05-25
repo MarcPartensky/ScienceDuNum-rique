@@ -130,11 +130,11 @@ class Electron(Particle):
         self,
         x: float,
         y: float,
-        vx: int = 0,
-        vy: int = 0,
-        energy: float = 0.5,
-        color: int = 0xFF9010,
-        radius: float = 0.01,
+        vx: int,
+        vy: int,
+        energy: float,
+        color: int,
+        radius: float,
     ):
         """Create a electron."""
         super().__init__(x, y, vx, vy, energy)
@@ -249,15 +249,21 @@ class Main:
         pygame.display.flip()
 
 
-def get_parser():
+def parse_config(config: dict) -> dict:
+    """Return the dictionary config."""
+    for key, value in config.items():
+        value i
+def get_parser() -> argparse.ArgumentParser:
     """Parser that parses terminal arguments."""
     import yaml
 
     parser = argparse.ArgumentParser(description=__doc__)
     with open("config.yml", "r") as stream:
-        content = yaml.safe_load(stream)
+        config = yaml.safe_load(stream)
 
     for key, value in content.items():
+        if isinstance(value, dict):
+            key += "_"
         parser.add_argument("--" + key, default=value, required=False, nargs="?")
 
     return parser
