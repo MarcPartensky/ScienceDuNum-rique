@@ -166,10 +166,10 @@ class Main:
         self.clock = pygame.time.Clock()
         self.background_color = config.background_color
         self.line_color = config.line_color
-        self.dt = config.dt
-        self.fps = config.fps
-        self.electron_energy = config.electron_energy
-        Photon.plank_constant = config.plank_constant
+        self.dt = float(config.dt)
+        self.fps = int(config.fps)
+        self.electron_energy = float(config.electron_energy)
+        Photon.plank_constant = float(config.plank_constant)
         self.start()
 
     def start(self):
@@ -253,7 +253,7 @@ def get_parser():
     """Parser that parses terminal arguments."""
     import yaml
 
-    parser = argparse.ArgumentParser(description="test")
+    parser = argparse.ArgumentParser(description=__doc__)
     with open("config.yml", "r") as stream:
         content = yaml.safe_load(stream)
 
