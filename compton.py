@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """Simulation of the compton effect."""
 import random, pygame,math,os
+import tkinter as tk
+from tkinter import ttk
+from tkinter import *
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -133,6 +136,34 @@ class Main():
                     game_exit = True
 
 
-if __name__ == "__main__":
+
+
+if __name__ == "_a_main__":
     a = Main()
     a()
+
+
+from tkinter import ttk
+from tkinter import *
+
+root = Tk()
+
+root.title("Welcome to LikeGeeks app")
+
+lbl = Label(root, text="Hello")
+
+lbl.grid(column=0, row=0)
+
+def btnClickFunction():
+    global root
+    print('clicked')
+    root.update_idletasks()
+
+spin = Spinbox(root, from_=0, to=100, width=5)
+spin.grid(column=0,row=0)
+
+btn = Button(root, text="Click Me")
+
+btn.grid(column=1, row=0)
+
+root.mainloop()
