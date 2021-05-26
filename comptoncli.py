@@ -12,7 +12,7 @@ def isfloat(value):
 
 def isint(value):
   try:
-    float(value)
+    int(value)
     return True
   except Exception:
     return False
@@ -78,14 +78,14 @@ class Main :
         print("Choisissez une longueur d'onde :")
         self.l = getFloat(300, 800, "en nm") * (10**(-9))
 
-        print("Choisissez une intensitée (%) :")
-        self.i = getFloat(0, 100, "%")
+        #print("Choisissez une intensitée (%) :")
+        #self.i = getFloat(0, 100, "%")
 
         print("Choisissez un matériau :")# to do utiliser curses https://docs.python.org/3/howto/curses.html
         element={"Cs" :1.19, "K":2.29, "Na":2.18, "Li":2.39, "Zn":4.3}
         #txt = "\n".join(["{} : {}".format(elem[0], list(t.items()).index(elem)) for elem in element.items()])
         #print(txt)
-        print(",".join([e for e,i in element.items()]))
+        print(",".join([e for e,_ in element.items()]))
         while True:
             result = input()
             if result in element:
@@ -116,3 +116,5 @@ if choix == 0:
     a()
 else :
     a.photoelectrique()
+
+input("Tapez sur enter pour quitter")
