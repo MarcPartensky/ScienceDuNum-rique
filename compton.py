@@ -138,7 +138,7 @@ class Main():
 
 
 
-if __name__ == "_a_main__":
+if __name__ == "__main__":
     a = Main()
     a()
 
