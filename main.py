@@ -61,7 +61,7 @@ class Main:
         self.E0 = (constants.h * constants.c) / self.L0
         self.E1 = constants.h * constants.c / self.L1
 
-        self.psi = -math.atan(1 / ((1 + self.E0 / self.Ee) * math.tan(self.phi / 2)))
+        self.psi = - math.atan(1 / ((1 + self.E0 / self.Ee) * math.tan(self.phi / 2)))
         self.K = (self.Ee / (self.Ee + self.E0 - self.E1)) ** 2
         self.V = constants.c * math.sqrt(1 - self.K)
 
