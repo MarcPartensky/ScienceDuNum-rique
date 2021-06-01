@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Simulation of the compton effect."""
+"""Simulation de l'effet compton et de l'effet photoélectrique."""
 
 import math
 from scipy import constants
