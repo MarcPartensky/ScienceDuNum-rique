@@ -98,7 +98,7 @@ class Main:
         # http://mdevmd.accesmad.org/mediatek/pluginfile.php/5037/mod_resource/content/2/Corrections%20des%20exercices%20sur%20leffet%20photo%C3%A9lectriqueTA%20-%20accesmad.htm
 
         print("Choisissez une longueur d'onde :")
-        self.l = getFloat(300, 800, "en nm :") * (10 ** (-9))
+        self.l = getFloat(300, 1000, "en nm :") * (10 ** (-9))
 
         # print("Choisissez une intensitée (%) :")
         # self.i = getFloat(0, 100, "%")
